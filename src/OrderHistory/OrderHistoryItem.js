@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 
-const OrderHistoryItem = () => {
+const OrderHistoryItem = (props) => {
+  const { orderName, totalPrice, delivered, lineItems, shippingAddress, dispatchedOn } = props
+  
+  useEffect(() => {
+    
+  })
+  
   return (
     <div>
       <div className="column is-12">
@@ -8,7 +15,7 @@ const OrderHistoryItem = () => {
           <div className="is-flex orders-block-header">
             <div className="item">
               <div>Order Number</div>
-              <div>#348741-US</div>
+              <div>{orderName}</div>
             </div>
 
             <div className="item">
@@ -19,11 +26,11 @@ const OrderHistoryItem = () => {
             </div>
             <div className="item">
               <div>Price</div>
-              <div>$5.00</div>
+              <div>${totalPrice}</div>
             </div>
             <div className="item">
               <div>Dispatch Date</div>
-              <div>March 30th 2019</div>
+              <div>{dispatchedOn}</div>
             </div>
           </div>
 
@@ -31,7 +38,7 @@ const OrderHistoryItem = () => {
 
           <div className="order-information">
             <p className="title is-6 is-marginless">
-              It&apos;s been dispatched!
+              It&apos;s been {delivered}!
             </p>
 
             <div>
@@ -86,7 +93,7 @@ const OrderHistoryItem = () => {
                 <div className="is-flex order-footer-information">
                   <div className="left-info">
                     <div>Delivery Address</div>
-                    <div>925 N La Brea Ave, West Hollywood, 90038</div>
+                    <div>{shippingAddress}</div>
                   </div>
                 </div>
               </div>
@@ -96,6 +103,15 @@ const OrderHistoryItem = () => {
       </div>
     </div>
   )
+}
+
+OrderHistoryItem.propTypes = {
+  orderName: PropTypes.string.isRequired,
+  totalPrice: PropTypes.string.isRequired,
+  delivered: PropTypes.string.isRequired,
+  lineItems: PropTypes.array.isRequired,
+  shippingAddress: PropTypes.string.isRequired,
+  dispatchedOn: PropTypes.string.isRequired
 }
 
 export default OrderHistoryItem

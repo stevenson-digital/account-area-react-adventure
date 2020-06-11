@@ -13,6 +13,7 @@ const OrderHistoryItem = (props) => {
     lineItems.forEach((item) => {
       const calculatedPrice = item.price * item.quantity
       let newItem = {
+        id: item.id,
         image: item.image,
         title: item.title,
         variantTitle: item.variant_title,
@@ -20,10 +21,21 @@ const OrderHistoryItem = (props) => {
         price: calculatedPrice.toFixed(2)
       }
 
-      // Format 'Huel Ready-to-drink' title to not include flavour
+      /*
+        Format Ready-to-drink title to not include flavour
+        and move flavour into variant slot
+      */
       if (item.sku.includes('RTD12-')) {
+        const splitAt = 'Huel '
+        const newVariant = item.title.split(splitAt)[1]
+
         newItem.title = 'Huel Ready-to-drink'
+        newItem.variantTitle = newVariant
       }
+
+      // Apply title as variant if null
+      if (!item.variant_title)
+        newItem.variantTitle = item.title
 
       newFormattedLineItems.push(newItem)
       
@@ -76,7 +88,7 @@ const OrderHistoryItem = (props) => {
                         image={item.image}
                         title={item.title}
                         variantTitle={item.variantTitle}
-                        qty={item.quantity}
+                        qty={item.qty}
                         price={item.price}
                       />
                     )

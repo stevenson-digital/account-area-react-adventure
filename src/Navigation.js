@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@reach/router';
 
-import OrderHistoryIcon from './OrderHistoryIcon';
+import OrderHistoryIcon from './OrderHistory/OrderHistoryIcon';
 
 const Navigation = () => {
   return (
@@ -26,13 +26,23 @@ const Navigation = () => {
         </li>
       </ul>
       <ul className="menu-list acc-menu-list">
-        <li>
+        <li style={{marginBottom: '1.2rem'}}>
           <Link to="/history">
             <div className="acc-menu-item">
               <div className="acc-menu-icon is-hidden-tablet-only">
                 <OrderHistoryIcon width="20" height="20" color="#000" />
               </div>
-              <span>Order History</span>
+              <span>Order History (dynamic)</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link to="/history-original">
+            <div className="acc-menu-item">
+              <div className="acc-menu-icon is-hidden-tablet-only">
+                <OrderHistoryIcon width="20" height="20" color="#000" />
+              </div>
+              <span>Order History (original)</span>
             </div>
           </Link>
         </li>

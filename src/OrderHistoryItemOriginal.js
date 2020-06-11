@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OrderHistoryItem = () => {
+const OrderHistoryItemOriginal = () => {
   return (
     <div>
       <div className="column is-12">
@@ -214,4 +214,4 @@ const OrderHistoryItem = () => {
   );
 };
 
-export default OrderHistoryItem;
+export default OrderHistoryItemOriginal;

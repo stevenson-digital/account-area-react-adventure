@@ -1,5 +1,5 @@
 import React from 'react';
-import OrderHistoryIcon from './OrderHistoryIcon';
+import OrderHistoryIcon from './OrderHistory/OrderHistoryIcon';
 
 const PageHeader = ({ title }) => {
   const bannerStyle = {

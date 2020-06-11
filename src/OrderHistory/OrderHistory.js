@@ -53,11 +53,11 @@ const OrderHistoryDynamic = () => {
     setOrderData(structuredOrderData)
 	}
 
+  // Get order data from api
 	useEffect(() => {
 		axios
 			.get('https://cors-anywhere.herokuapp.com/https://reactasty.apps.huel.io/api/customer/orders')
 			.then((response) => {
-        console.log(response.data[0].orders)
 				handleStructureOrderData(response.data[0].orders)
 			})
   }, [])

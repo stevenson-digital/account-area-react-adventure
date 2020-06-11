@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import OrderLineItem from './OrderLineItem'
 
 const OrderHistoryItem = (props) => {
   const { orderName, totalPrice, delivered, lineItems, shippingAddress, dispatchedOn } = props
-  
-  useEffect(() => {
-    
-  })
   
   return (
     <div>
@@ -44,50 +41,19 @@ const OrderHistoryItem = (props) => {
             <div>
               <div className="order-information-expanded">
                 <div className="product-list-boxes columns is-multiline">
-                  <div className="column is-6">
-                    <div className="media">
-                      <div className="media-left">
-                        <img
-                          alt="Product bars"
-                          className="image"
-                          src="https://huel-assets.s3.eu-west-2.amazonaws.com/temp-public/thumbnails/rtd.jpg"
-                        />
-                      </div>
-                      <div className="media-content">
-                        <div>
-                          <p className="product-title">Huel Ready-to-drink</p>
-                          <p className="product-variants">
-                            2x Ready-to-drink Vanilla
-                          </p>
-                        </div>
-                      </div>
-                      <div className="media-right">
-                        <p className="product-price">$99.00</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="column is-6">
-                    <div className="media">
-                      <div className="media-left">
-                        <img
-                          alt="Product bars"
-                          className="image"
-                          src="https://cdn.shopify.com/s/files/1/1374/5287/products/Free_Tshirt_and_Shaker.png?v=1551882727"
-                        />
-                      </div>
-                      <div className="media-content">
-                        <div>
-                          <p className="product-title">
-                            Free T-Shirt &amp; Shaker
-                          </p>
-                          <p className="product-variants">1x Small / Male</p>
-                        </div>
-                      </div>
-                      <div className="media-right">
-                        <p className="product-price">$0.00</p>
-                      </div>
-                    </div>
-                  </div>
+                  {lineItems.map((item) => {
+                    console.log(item)
+                    return (
+                      <OrderLineItem
+                        key={item.id}
+                        image={item.image}
+                        title={item.title}
+                        variantTitle={item.variant_title}
+                        qty={item.quantity}
+                        price={item.price}
+                      />
+                    )
+                  })}
                 </div>
                 <hr />
                 <div className="is-flex order-footer-information">

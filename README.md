@@ -5,3 +5,4 @@
 - Future updates I would:
 	- Add a simple css fade in effect on OrderHistoryItem based on a 'loading' state to avoid the harsh content load
 	- Add tests with Jest, maybe where the new cumulative price is calculated when we combine the powder products
+- "It's been dispatched!" text runs from the 'delivered' boolean in the data source. "It's been dispatched!" vs "It's been delivered!" on true/false

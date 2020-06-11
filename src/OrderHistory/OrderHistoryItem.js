@@ -1,10 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import OrderLineItem from './OrderLineItem'
 
 const OrderHistoryItem = (props) => {
   const { orderName, totalPrice, delivered, lineItems, shippingAddress, dispatchedOn } = props
+  const [formattedLineItems, setFormattedLineItems] = useState([])
   
+  useEffect(() => {
+    // Format line items data object
+    let newFormattedLineItems = []
+
+    lineItems.forEach((item) => {
+      const calculatedPrice = item.price * item.quantity
+      let newItem = {
+        image: item.image,
+        title: item.title,
+        variantTitle: item.variant_title,
+        qty: item.quantity,
+        price: calculatedPrice.toFixed(2)
+      }
+
+      // Format 'Huel Ready-to-drink' title to not include flavour
+      if (item.sku.includes('RTD12-')) {
+        newItem.title = 'Huel Ready-to-drink'
+      }
+
+      newFormattedLineItems.push(newItem)
+      
+      // if SKU is the same as any product already in the array then build as one component
+    })
+
+    setFormattedLineItems(newFormattedLineItems)
+  }, [])
+
   return (
     <div>
       <div className="column is-12">
@@ -41,14 +69,13 @@ const OrderHistoryItem = (props) => {
             <div>
               <div className="order-information-expanded">
                 <div className="product-list-boxes columns is-multiline">
-                  {lineItems.map((item) => {
-                    console.log(item)
+                  {formattedLineItems.map((item) => {
                     return (
                       <OrderLineItem
                         key={item.id}
                         image={item.image}
                         title={item.title}
-                        variantTitle={item.variant_title}
+                        variantTitle={item.variantTitle}
                         qty={item.quantity}
                         price={item.price}
                       />

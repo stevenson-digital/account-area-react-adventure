@@ -32,7 +32,7 @@ const OrderLineItem = (props) => {
 
 OrderLineItem.propTypes = {
   image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   variantTitle: PropTypes.string.isRequired,
   qty: PropTypes.number.isRequired,
   price: PropTypes.string.isRequired,

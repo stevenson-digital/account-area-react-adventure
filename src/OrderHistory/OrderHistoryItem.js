@@ -10,16 +10,21 @@ const OrderHistoryItem = (props) => {
     // Format line items data object
     let newFormattedLineItems = []
 
-    lineItems.forEach((item) => {
-      const calculatedPrice = item.price * item.quantity
+    lineItems.forEach(item => {
+      const qty = item.quantity
+      const calculatedPrice = item.price * qty
+
       let newItem = {
         id: item.id,
         image: item.image,
         title: item.title,
-        variantTitle: item.variant_title,
-        qty: item.quantity,
-        price: calculatedPrice.toFixed(2)
+        variantTitle: qty + 'x ' + item.variant_title,
+        qty: qty,
+        price: calculatedPrice.toFixed(2),
+        sku: item.sku
       }
+
+      const appendQty = () => item.quantity + 'x '
 
       /*
         Format Ready-to-drink title to not include flavour
@@ -30,18 +35,80 @@ const OrderHistoryItem = (props) => {
         const newVariant = item.title.split(splitAt)[1]
 
         newItem.title = 'Huel Ready-to-drink'
-        newItem.variantTitle = newVariant
+        newItem.variantTitle = appendQty() + newVariant
       }
 
       // Apply title as variant if null
       if (!item.variant_title)
-        newItem.variantTitle = item.title
-
-      newFormattedLineItems.push(newItem)
+        newItem.variantTitle = appendQty() + item.title
       
-      // if SKU is the same as any product already in the array then build as one component
+      /*
+        Format powder title to not include flavour
+        and move flavour into variant slot
+      */
+      if (item.sku.includes('POW-')) {
+        const splitAt = 'Huel Powder'
+        const newVariant = item.title.split(splitAt)[1]
+
+        newItem.title = splitAt
+        newItem.variantTitle = appendQty() + newVariant
+      }
+
+      // Add new item
+      newFormattedLineItems.push(newItem)
     })
 
+    /*
+      Loop over newly formatted items array to
+      see if we have a match on a powder product
+      and move all flavours (products) into 1 variant
+      slot on 1 line_item component
+    */
+    let triggered = false
+    let firstPowderIndex = 0
+    let powderItemsToRemove = []
+
+    // Find the first instance of the powder product
+    for (let i = 0; i < newFormattedLineItems.length; i++) {
+      if (triggered)
+        break
+
+      const thisItem = newFormattedLineItems[i]
+      if (thisItem.sku.includes('POW-')) {
+        firstPowderIndex = i
+        triggered = true
+      }
+    }
+
+    // Loop again to assign values to first powder product
+    for (let i = 0; i < newFormattedLineItems.length; i++) {
+
+      const thisItem = newFormattedLineItems[i]
+      if (thisItem.sku.includes('POW-') && i !== firstPowderIndex) {
+        const itemToUpdate = newFormattedLineItems[firstPowderIndex]
+        
+        // Append the variantTitle
+        const thisVariantTitle = newFormattedLineItems[i].variantTitle
+        const originalVariantTitle = itemToUpdate.variantTitle
+        itemToUpdate.variantTitle = originalVariantTitle + ', ' + thisVariantTitle
+        
+        // Calculate and update the price
+        const qty = newFormattedLineItems[i].qty
+        const thisPrice = newFormattedLineItems[i].price * qty
+        const originalPrice = itemToUpdate.price
+        const newPrice = parseInt(originalPrice) + parseInt(thisPrice)
+        itemToUpdate.price = newPrice.toFixed(2)
+
+        // Set this item to be removed from the array
+        powderItemsToRemove.push(i)
+      }
+    }
+
+    // Remove excess powder items from array
+    for (let i = powderItemsToRemove.length -1; i >= 0; i--) 
+      newFormattedLineItems.splice(powderItemsToRemove[i], 1)
+
+    // Push correctly formatted items to state
     setFormattedLineItems(newFormattedLineItems)
   }, [])
 
@@ -81,10 +148,10 @@ const OrderHistoryItem = (props) => {
             <div>
               <div className="order-information-expanded">
                 <div className="product-list-boxes columns is-multiline">
-                  {formattedLineItems.map((item) => {
+                  {formattedLineItems.map((item, index) => {
                     return (
                       <OrderLineItem
-                        key={item.id}
+                        key={index + '-' + item.id}
                         image={item.image}
                         title={item.title}
                         variantTitle={item.variantTitle}

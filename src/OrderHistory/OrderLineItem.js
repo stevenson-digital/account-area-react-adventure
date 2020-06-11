@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const OrderLineItem = (props) => {
-	const { image, title, variantTitle, qty, price } = props
+	const { image, title, variantTitle, price } = props
 
 	return (
 		<div className="column is-6">
@@ -19,7 +19,7 @@ const OrderLineItem = (props) => {
 						<p className="product-title">
 							{title}
 						</p>
-						<p className="product-variants">{qty}x {variantTitle}</p>
+						<p className="product-variants">{variantTitle}</p>
 					</div>
 				</div>
 				<div className="media-right">
@@ -34,7 +34,6 @@ OrderLineItem.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   variantTitle: PropTypes.string.isRequired,
-  qty: PropTypes.number.isRequired,
   price: PropTypes.string.isRequired,
 }
 
